@@ -29,6 +29,7 @@ fun main() {
         val pathToZip = Path("mqtt-cert.zip")
 
         // connect to the MQTT broker and login to xesar
+        // set 'logoutOnClose' to 'false' to avoid triggering a logout and certificate expiration after each execution when using the zip file for authentication
         val xesar = XesarConnect.connectAndLoginAsync(Config.configureFromZip(pathToZip)).await()
 
         // Subscribe to topics all topics (or the topics you are interested in)
