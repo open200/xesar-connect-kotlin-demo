@@ -17,7 +17,7 @@ repositories {
     mavenCentral()
 }
 
-val kotlinxCoroutinesVersion: String = "1.7.3"
+val kotlinxCoroutinesVersion: String = "1.8.0"
 val kotlinLoggingVersion: String = "3.0.5"
 val xesarConnectVersion: String = "1.0.0"
 val bouncycastleVersion: String = "1.76"
