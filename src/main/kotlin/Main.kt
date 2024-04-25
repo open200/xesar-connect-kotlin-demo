@@ -1,11 +1,9 @@
 import com.open200.xesar.connect.Config
 import com.open200.xesar.connect.Topics
 import com.open200.xesar.connect.XesarConnect
-import com.open200.xesar.connect.extension.createPersonAsync
-import com.open200.xesar.connect.extension.deletePersonAsync
-import com.open200.xesar.connect.extension.queryPersonByIdAsync
-import com.open200.xesar.connect.extension.queryPersonListAsync
+import com.open200.xesar.connect.extension.*
 import com.open200.xesar.connect.filters.TopicFilter
+import com.open200.xesar.connect.messages.command.Query
 import com.open200.xesar.connect.messages.query.AccessProtocolEvent
 import com.open200.xesar.connect.messages.query.EventType
 import com.open200.xesar.connect.messages.query.GroupOfEvent
@@ -46,15 +44,23 @@ fun main() {
         ).await()
 
         // query all persons
-        xesar.queryPersonListAsync().await().let {
-            log.info { "Received person list: $it" }
-        }
+        val persons = xesar.queryPersons().data
+        log.info { "Received person list: $persons" }
+
 
         // query one person by id
-        val person = xesar.queryPersonByIdAsync(personId).await()
+        val person = xesar.queryPersonById(personId)
 
-        // send command to delete a person
-        xesar.deletePersonAsync(person.externalId).await()
+        person?.let {
+            // send command to delete a person
+            xesar.deletePersonAsync(person.externalId).await()
+        }
+
+        // fetching persons incrementally in smaller,more manageable chunks
+        val chunkSize = 15
+        xesar.queryStreamPerson(Query.Params(pageLimit =chunkSize)).collect{
+            log.info { "person: ${it.firstName}, ${it.lastName}" }
+        }
 
         // subscribe to the access event and listen to battery warnings. You can use the provided enums for the events from the library
         val batteryEmptyTopic = Topics.Event.accessProtocolEventTopic(GroupOfEvent.EvvaComponent, EventType.BATTERY_EMPTY)

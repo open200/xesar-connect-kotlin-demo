@@ -17,16 +17,24 @@ repositories {
     mavenCentral()
 }
 
+val kotlinxCoroutinesVersion: String = "1.8.0"
+val kotlinLoggingVersion: String = "3.0.5"
+val xesarConnectVersion: String = "1.0.0"
+val bouncycastleVersion: String = "1.76"
+val logbackVersion: String = "1.4.14"
+
+
+
 dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-    implementation("io.github.microutils:kotlin-logging:3.0.5")
-    implementation("com.open200:xesar-connect:0.10.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion")
+    implementation("io.github.microutils:kotlin-logging:$kotlinLoggingVersion")
+    implementation("com.open200:xesar-connect:$xesarConnectVersion")
 
     // add SLF4J implementation of your choice (e.g. logback)
-    implementation("ch.qos.logback:logback-classic:1.4.14")
+    implementation("ch.qos.logback:logback-classic:$logbackVersion")
 
     // add security provider of your choice (e.g. bouncycastle)
-    implementation("org.bouncycastle:bcprov-jdk18on:1.76")
+    implementation("org.bouncycastle:bcprov-jdk18on:$bouncycastleVersion")
 
     testImplementation(kotlin("test"))
 }
